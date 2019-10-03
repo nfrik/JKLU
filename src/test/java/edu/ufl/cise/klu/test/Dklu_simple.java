@@ -23,6 +23,7 @@ public class Dklu_simple extends TestCase {
 	/**
 	 * a simple KLU demo; solution is x = (1,2,3,4,5)
 	 */
+
 	public static void test_klu_simple() {
 		int i;
 		KLU_symbolic Symbolic;
