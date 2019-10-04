@@ -5,6 +5,7 @@ import edu.ufl.cise.klu.common.KLU_numeric;
 import edu.ufl.cise.klu.common.KLU_symbolic;
 import edu.ufl.cise.klu.utils.CCSMatrixWrap;
 import no.uib.cipr.matrix.sparse.CompColMatrix;
+import no.uib.cipr.matrix.sparse.FlexCompColMatrix;
 import no.uib.cipr.matrix.sparse.SparseVector;
 import org.la4j.Vector;
 import org.la4j.matrix.DenseMatrix;
@@ -64,7 +65,8 @@ public class LUtest {
 
 //        sparseMatrix.set(0,0,23f);
 
-
+        FlexCompColMatrix a = new FlexCompColMatrix(n,n);
+        CompColMatrix ccm = new CompColMatrix(a);
 
         KLU_symbolic Symbolic;
         KLU_numeric Numeric;
