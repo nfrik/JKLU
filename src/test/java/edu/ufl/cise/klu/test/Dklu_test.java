@@ -378,6 +378,7 @@ public class Dklu_test extends Dcs_test {
 		assertEquals(4.35093e+07, Common.condest, 1e+06) ;  // FIXME: improve assertion accuracy
 		assertEquals(4.5277e-05, Common.rcond, 1e-08) ;
 		assertEquals(259, Common.flops, 1e-03) ;
+		System.out.println("Status: "+Common.status);
 	}
 
 	/**

@@ -94,6 +94,20 @@
   		<version>3.8.2</version>
   		<scope>test</scope>
   	</dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.la4j/la4j -->
+      <dependency>
+          <groupId>org.la4j</groupId>
+          <artifactId>la4j</artifactId>
+          <version>0.6.0</version>
+      </dependency>
+
+      <dependency>
+          <groupId>com.googlecode.matrix-toolkits-java</groupId>
+          <artifactId>mtj</artifactId>
+          <version>1.0.2</version>
+      </dependency>
+
   </dependencies>
 
   <build>
