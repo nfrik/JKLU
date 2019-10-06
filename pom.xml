@@ -108,6 +108,14 @@
           <version>1.0.2</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/org.ejml/ejml-all -->
+      <dependency>
+          <groupId>org.ejml</groupId>
+          <artifactId>ejml-all</artifactId>
+          <version>0.38</version>
+      </dependency>
+
+
   </dependencies>
 
   <build>

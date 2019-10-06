@@ -8,61 +8,6 @@ import java.lang.reflect.Field;
 
 public class CCSMatrixWrap{
 
-//        public CCSMatrixWrap(int r,int c){
-////            this(r,c);
-//            Field rowIndicesField = null;
-//            Field columnPointersField = null;
-//            Field valuesField = null;
-//            try {
-//                rowIndicesField = CCSMatrix.class.getDeclaredField("rowIndices");
-//                columnPointersField = CCSMatrix.class.getDeclaredField("columnPointers");
-//                valuesField = CCSMatrix.class.getDeclaredField("values");
-//            } catch (NoSuchFieldException e) {
-//                e.printStackTrace();
-//            }
-//
-//            rowIndicesField.setAccessible(true);
-//            columnPointersField.setAccessible(true);
-//            valuesField.setAccessible(true);
-//        }
-
-
-//    public SparseMatrix sparseMatrix=null;
-////    CCSMatrix.zero(n, n);
-//    public CCSMatrixWrap(int n){
-//        this.sparseMatrix = CCSMatrix.zero(n,n);
-//
-//        Field rowIndicesField = null;
-//        Field columnPointersField = null;
-//        Field valuesField = null;
-//        try {
-//            rowIndicesField = CCSMatrix.class.getDeclaredField("rowIndices");
-//            columnPointersField = CCSMatrix.class.getDeclaredField("columnPointers");
-//            valuesField = CCSMatrix.class.getDeclaredField("values");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//
-//        rowIndicesField.setAccessible(true);
-//        columnPointersField.setAccessible(true);
-//        valuesField.setAccessible(true);
-//    }
-//
-//
-//    public SparseMatrix getSparseMatrix() {
-//        return sparseMatrix;
-//
-//    }
-//    public void set(int i, int i1, double v){
-//        this.sparseMatrix.set(i,i1,v);
-//    }
-//
-//    public double get(int i, int i1){
-//        return this.sparseMatrix.get(i,i1);
-//    }
-//
-////    public void CCSMatrix.randomSymmetric()
-
     public static int[] getRowIndices(SparseMatrix sparseMatrix){
 
         Field rowIndicesField = null;
