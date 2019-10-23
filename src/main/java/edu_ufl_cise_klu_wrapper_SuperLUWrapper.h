@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ledu/ufl/cise/klu/wrapper/SuperMatrix;III[D[I[ILedu/ufl/cise/klu/wrapper/Stype_t;Ledu/ufl/cise/klu/wrapper/Dtype_t;Ledu/ufl/cise/klu/wrapper/Mtype_t;)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dCreate_1CompCol_1Matrix
-  (JNIEnv *, jobject, jobject, jint, jint, jint, jdoubleArray, jintArray, jintArray, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jobject, jint, jint, jint, jdoubleArray, jintArray, jintArray, jobject, jobject, jobject);
 
 /*
  * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dCreate_1Com
  * Signature: (II[DI)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dGenXtrue
-  (JNIEnv *, jobject, jint, jint, jdoubleArray, jint);
+  (JNIEnv *, jclass, jint, jint, jdoubleArray, jint);
 
 /*
  * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dGenXtrue
  * Signature: (Ledu/ufl/cise/klu/wrapper/trans_t;I[DILedu/ufl/cise/klu/wrapper/SuperMatrix;Ledu/ufl/cise/klu/wrapper/SuperMatrix;)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dFillRHS
-  (JNIEnv *, jobject, jobject, jint, jdoubleArray, jint, jobject, jobject);
+  (JNIEnv *, jclass, jobject, jint, jdoubleArray, jint, jobject, jobject);
 
 /*
  * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dFillRHS
  * Signature: (ILedu/ufl/cise/klu/wrapper/SuperMatrix;[I)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_get_1perm_1c
-  (JNIEnv *, jobject, jint, jobject, jintArray);
+  (JNIEnv *, jclass, jint, jobject, jintArray);
 
 /*
  * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_get_1perm_1c
  * Signature: ([Ledu/ufl/cise/klu/wrapper/superlu_options_t;Ledu/ufl/cise/klu/wrapper/SuperMatrix;[I[ILedu/ufl/cise/klu/wrapper/SuperMatrix;Ledu/ufl/cise/klu/wrapper/SuperMatrix;Ledu/ufl/cise/klu/wrapper/SuperMatrix;[Ledu/ufl/cise/klu/wrapper/SuperLUStat_t;[I)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dgssv
-  (JNIEnv *, jobject, jobjectArray, jobject, jintArray, jintArray, jobject, jobject, jobject, jobjectArray, jintArray);
+  (JNIEnv *, jclass, jobjectArray, jobject, jintArray, jintArray, jobject, jobject, jobject, jobjectArray, jintArray);
 
 /*
  * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
@@ -53,7 +53,15 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dgssv
  * Signature: (ILedu/ufl/cise/klu/wrapper/SuperMatrix;[D)V
  */
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dinf_1norm_1error
-  (JNIEnv *, jobject, jint, jobject, jdoubleArray);
+  (JNIEnv *, jclass, jint, jobject, jdoubleArray);
+
+/*
+ * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
+ * Method:    ccs_components_b_dgssv
+ * Signature: (II[I[I[D[D)V
+ */
+JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_ccs_1components_1b_1dgssv
+  (JNIEnv *, jclass, jint, jint, jintArray, jintArray, jdoubleArray, jdoubleArray);
 
 #ifdef __cplusplus
 }
