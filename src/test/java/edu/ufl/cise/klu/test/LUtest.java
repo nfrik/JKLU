@@ -6,6 +6,7 @@ import edu.ufl.cise.klu.common.KLU_symbolic;
 import edu.ufl.cise.klu.utils.CCSMatrixWrap;
 import no.uib.cipr.matrix.MatrixEntry;
 import no.uib.cipr.matrix.sparse.CompColMatrix;
+import no.uib.cipr.matrix.sparse.CompRowMatrix;
 import no.uib.cipr.matrix.sparse.FlexCompColMatrix;
 import org.ejml.data.DMatrixSparseCSC;
 import org.la4j.matrix.SparseMatrix;
@@ -23,8 +24,8 @@ public class LUtest {
 
     private static final double DELTA = 1e-09 ;
 
-    private static int n = 4000 ;
-    private static int diagm = 20 ;
+    private static int n = 10000 ;
+    private static int diagm = 1000 ;
     private static int [ ] Ap = {0, 2, 5, 9, 10, 12} ;
     private static int [ ] Ai = {0, 1, 0, 2, 4, 1, 2, 3, 4, 2, 1, 4} ;
     private static double [ ] Ax = {2., 3., 3., -1., 4., 4., -3., 1., 2., 2., 6., 1.} ;
