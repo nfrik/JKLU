@@ -24,6 +24,7 @@ import static edu.ufl.cise.klu.tdouble.Dklu_version.KLU_SINGULAR;
 
 import java.lang.reflect.Field;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class LUtest {
 
@@ -40,6 +41,7 @@ public class LUtest {
      */
 
     public static void mtj_ccs_klu_test(){
+        System.out.println("\nstarting mtj_ccs_klu_test\n");
         long startTime = System.nanoTime();
 
         FlexCompColMatrix sparseMatrix = new FlexCompColMatrix(n,n);
@@ -99,10 +101,14 @@ public class LUtest {
 
         System.out.println("Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
         System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
-
+        for (int i = 0 ; i < n ; i++) {
+            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+////            assertEquals(i + 1.0, b [i], DELTA) ;
+        }
     }
 
     public static void la4j_ccs_klu_test(){
+        System.out.println("\nla4j_ccs_klu_test\n");
         long startTime = System.nanoTime();
         SparseMatrix sparseMatrix = CCSMatrix.zero(n, n);
         System.out.println("Matrix instantiated time msec: "+ (System.nanoTime()-startTime)/1000000);
@@ -156,10 +162,10 @@ public class LUtest {
 
         System.out.println("Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
         System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
-//        for (i = 0 ; i < n ; i++) {
-//            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+        for (int i = 0 ; i < n ; i++) {
+            System.out.printf("x [%d] = %g\n", i, b [i]) ;
 ////            assertEquals(i + 1.0, b [i], DELTA) ;
-//        }
+        }
     }
 
     private static void superluwr_ccs_klu_test()
@@ -228,10 +234,10 @@ public class LUtest {
 
         System.out.println("Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
         System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
-//        for (i = 0 ; i < n ; i++) {
-//            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+        for (int i = 0 ; i < n ; i++) {
+            System.out.printf("x [%d] = %g\n", i, b [i]) ;
 ////            assertEquals(i + 1.0, b [i], DELTA) ;
-//        }
+        }
     }
 
     private static void short_superLU_wrapped_ccs_test()
@@ -271,16 +277,22 @@ public class LUtest {
 
         System.out.println("Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
         //System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
-//        for (i = 0 ; i < n ; i++) {
-//            System.out.printf("x [%d] = %g\n", i, b [i]) ;
-////            assertEquals(i + 1.0, b [i], DELTA) ;
-//        }
+        for (int i = 0 ; i < n ; i++) {
+            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+            //assertEquals(i + 1.0, b [i], DELTA) ;
+        }
     }
 
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
         mtj_ccs_klu_test();
         la4j_ccs_klu_test();
         //superluwr_ccs_klu_test();
+        System.out.println("\nstarting test with SuperLU wrapped everything\n");
+        String property = System.getProperty("java.library.path");
+        StringTokenizer parser = new StringTokenizer(property, ";");
+        while (parser.hasMoreTokens()) {
+            System.err.println(parser.nextToken());
+        }
         short_superLU_wrapped_ccs_test();
     }
 }
