@@ -63,6 +63,14 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_dinf_1norm_1
 JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_ccs_1components_1b_1dgssv
   (JNIEnv *, jclass, jint, jint, jintArray, jintArray, jdoubleArray, jdoubleArray);
 
+/*
+ * Class:     edu_ufl_cise_klu_wrapper_SuperLUWrapper
+ * Method:    ccs_components_b_pdgssv
+ * Signature: (III[I[I[D[D)V
+ */
+JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_ccs_1components_1b_1pdgssv
+  (JNIEnv *, jclass, jint, jint, jint, jintArray, jintArray, jdoubleArray, jdoubleArray);
+
 #ifdef __cplusplus
 }
 #endif

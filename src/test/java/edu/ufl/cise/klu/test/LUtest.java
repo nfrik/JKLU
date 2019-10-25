@@ -283,9 +283,52 @@ public class LUtest {
         }
     }
 
+    private static void short_superLU_wrapped_ccs_test_par()
+    {
+        //partial copy ov la4j_ccs_klu
+
+        long startTime = System.nanoTime();
+        SparseMatrix sparseMatrix = CCSMatrix.zero(n, n);
+        System.out.println("[LA4J] Parallel Matrix instantiated time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+        b= new double[n];
+        Random rand = new Random();
+        rand.setSeed(1212);
+
+        for(int i=0;i<sparseMatrix.rows();i++){
+            for(int m=0;m<rand.nextInt(50);m++){
+                int k = rand.nextInt(sparseMatrix.rows());
+                double val = rand.nextDouble();
+                sparseMatrix.set(i,k,val);
+                sparseMatrix.set(k,i,val);
+                sparseMatrix.set(i,i,rand.nextDouble());
+            }
+
+            b[i]=rand.nextDouble();
+        }
+        System.out.println("Matrix initialized time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+
+        Ap= CCSMatrixWrap.getColumnPointers(sparseMatrix);
+        Ai= CCSMatrixWrap.getRowIndices(sparseMatrix);
+        Ax= CCSMatrixWrap.getValues(sparseMatrix);
+
+        System.out.println("Retrieved CCS data time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+
+        SuperLUWrapper.ccs_components_b_pdgssv(2 , n,n, Ap, Ai, Ax, b);
+
+        System.out.println("Par superLU wrapped Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
+        //System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
+        for (int i = 0 ; i < n ; i++) {
+            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+            //assertEquals(i + 1.0, b [i], DELTA) ;
+        }
+    }
+
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        mtj_ccs_klu_test();
-        la4j_ccs_klu_test();
+        //mtj_ccs_klu_test();
+        //la4j_ccs_klu_test();
         //superluwr_ccs_klu_test();
         System.out.println("\nstarting test with SuperLU wrapped everything\n");
         String property = System.getProperty("java.library.path");
@@ -293,6 +336,8 @@ public class LUtest {
         while (parser.hasMoreTokens()) {
             System.err.println(parser.nextToken());
         }
-        short_superLU_wrapped_ccs_test();
+        //short_superLU_wrapped_ccs_test();
+        short_superLU_wrapped_ccs_test_par();
+
     }
 }

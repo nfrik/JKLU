@@ -16,4 +16,6 @@ public class SuperLUWrapper {
                               SuperMatrix U, SuperMatrix B, SuperLUStat_t[] stat, int[] info);
     public static native void dinf_norm_error(int nrhs, SuperMatrix X, double[] xtrue);
     public static native void ccs_components_b_dgssv( int rows, int cols, int[] colPointers, int[] rowPointers, double[] values, double[] b );
+    public static native void ccs_components_b_pdgssv(int nproc, int rows, int cols, int[] colPointers, int[] rowPointers, double[] values, double[] b );
+
 }
