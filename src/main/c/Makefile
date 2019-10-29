@@ -8,7 +8,7 @@ libsuperLUWrapper.so: edu_ufl_cise_klu_wrapper_SuperLUWrapper.o libsuperlu_mt_PT
 -Wl,--no-whole-archive  -Wl,-rpath,/usr/lib/x86_64-linux-gnu/ -L/usr/lib/x86_64-linux-gnu/  -lpthread -lm -lblas
 
 edu_ufl_cise_klu_wrapper_SuperLUWrapper.o: edu_ufl_cise_klu_wrapper_SuperLUWrapper.c
-	gcc -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/linux"  -I../../superlu-mt/SRC -fPIC -O2 -c $^ -o $@
+	gcc -shared -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/linux" -D_LONGINT -I../../superlu-mt/SRC -fPIC -O3 -c $^ -o $@
 
 .PHONY: clean
 clean:

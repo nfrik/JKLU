@@ -162,13 +162,15 @@ JNIEXPORT void JNICALL Java_edu_ufl_cise_klu_wrapper_SuperLUWrapper_ccs_1compone
      SuperMatrix   U;       /* factor U */
      NCPformat *Ustore;
      SuperMatrix   B;
-int      nrhs, ldx, info, m, n, nnz;
+int      nrhs, ldx, m, n, nnz;
+    int_t info;
 
     int_t      panel_size, relax, maxsup;
     int_t      permc_spec;
     trans_t  trans;
     double   *xact, *rhs;
     superlu_memusage_t   superlu_memusage;
+    int i;
 
     trans             = NOTRANS;
         n                 = 1000;
@@ -193,7 +195,19 @@ int      nrhs, ldx, info, m, n, nnz;
     jint *cols_int = (*env)->GetIntArrayElements(env, colsPtrs, 0);
     jdouble *b_double = (*env)->GetDoubleArrayElements(env, b_vector, 0);
 
- dCreate_CompCol_Matrix(&A, rows, cols, vals_size, values_double, rows_int, cols_int, SLU_NC, SLU_D, SLU_GE);
+    int_t *rowsIntArray = (int_t*)calloc(row_size, sizeof(int_t));
+    int_t *colsIntArray = (int_t*)calloc(cols_size, sizeof(int_t));
+    for (i=0; i < row_size; ++i) {
+        rowsIntArray[i] = rows_int[i];
+    }
+    for (i=0; i < cols_size; ++i) {
+        colsIntArray[i] = cols_int[i];
+    }
+    (*env)->ReleaseIntArrayElements(env, rowPointed, rows_int, 0);
+    (*env)->ReleaseIntArrayElements(env, colsPtrs, cols_int, 0);
+    
+
+ dCreate_CompCol_Matrix(&A, rows, cols, vals_size, values_double, rowsIntArray, colsIntArray, SLU_NC, SLU_D, SLU_GE);
     Astore = A.Store;
     printf("Dimension " IFMT "x" IFMT "; # nonzeros " IFMT "\n", A.nrow, A.ncol, Astore->nnz);
 dCreate_Dense_Matrix(&B, rows, 1,b_double, b_size, SLU_DN, SLU_D, SLU_GE);
@@ -225,8 +239,15 @@ printf("calling pdgssv\n");
                superlu_memusage.expansions);
 
         } else {
-            printf("info is %d\n", info);
+            printf("info is " IFMT "\n", info);
         }
+
+            (*env)->ReleaseDoubleArrayElements(env, values, values_double, 0);
+            (*env)->ReleaseDoubleArrayElements(env, b_vector, b_double, 0);
+            //(*env)->ReleaseIntArrayElements(env, rowPointed, rows_int, 0);
+            //(*env)->ReleaseIntArrayElements(env, colsPtrs, cols_int, 0);
+    free(rowsIntArray);
+    free(colsIntArray);
 
         SUPERLU_FREE (xact);
         SUPERLU_FREE (perm_r);
