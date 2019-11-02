@@ -1,6 +1,15 @@
 # JAVA_HOME=
 #JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
+# if you need to rebuild JNI , it's needed to export JAVA_HOME variable
+#
+# I'm doing it as:
+# export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+# to point to Java-8 files
+#
+# you will also need superlu-mt headers. Makefile is written so that sources are expected in
+# JKLU/src/superlu-mt
+
 all:   libsuperLUWrapper.so
 
 libsuperLUWrapper.so: edu_ufl_cise_klu_wrapper_SuperLUWrapper.o libsuperlu_mt_PTHREAD.a
