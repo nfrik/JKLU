@@ -1,5 +1,7 @@
 package edu.ufl.cise.klu.test;
 
+import edu.emory.mathcs.csparsej.tdouble.Dcs_common;
+import edu.emory.mathcs.csparsej.tdouble.test.Dcs_test;
 import edu.ufl.cise.klu.common.KLU_common;
 import edu.ufl.cise.klu.common.KLU_numeric;
 import edu.ufl.cise.klu.common.KLU_symbolic;
@@ -17,10 +19,14 @@ import static edu.ufl.cise.klu.tdouble.Dklu_defaults.klu_defaults;
 import static edu.ufl.cise.klu.tdouble.Dklu_factor.klu_factor;
 import static edu.ufl.cise.klu.tdouble.Dklu_solve.klu_solve;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Random;
 
-public class LUtest {
+import java.io.*;
+
+public class LUtest extends  Dcs_test {
 
     private static final double DELTA = 1e-09 ;
 
@@ -308,10 +314,137 @@ public class LUtest {
 //        }
     }
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        mtj_ccs_klu_test();
+    protected static InputStream get_stream(String name) {
+        try
+        {
+            return LUtest.class.getResource("matrix" + "/" + name).openStream() ;
+        }
+        catch (IOException e)
+        {
+            return (null) ;
+        }
+    }
+
+    public void ejml_ccs_klu_test_asic_100k(){
+        long startTime = System.nanoTime();
+        InputStream in = get_stream ("ASIC_100k") ;
+        System.out.println("Read file time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+
+        Dproblem prob = get_problem (in, 0, 1) ;
+        Dcs_common.Dcs A = prob.A ;
+
+//        SparseMatrix sparseMatrix = CCSMatrix.zero(n, n);
+//        DMatrixSparseTriplet sparseTriplet = new DMatrixSparseTriplet(n,n,10);
+        DMatrixSparseCSC sparseTriplet=new DMatrixSparseCSC(n,n,40000);
+        System.out.println("Matrix instantiated time msec: "+ (System.nanoTime()-startTime)/1000000);
+
+
+        startTime = System.nanoTime();
+
+        b= new double[n];
+
+        Random rand = new Random();
+        rand.setSeed(1212);
+
+        int count=0;
+        for(int i=0;i<n;i++){
+            int randm=rand.nextInt(diagm);
+            for(int m=0;m<randm;m++){
+                int k = rand.nextInt(n);
+                double val = rand.nextDouble();
+                sparseTriplet.set(i,k,val);
+                sparseTriplet.set(k,i,val);
+                sparseTriplet.set(i,i,rand.nextDouble());
+                count++;
+            }
+
+            b[i]=rand.nextDouble();
+        }
+
+        System.out.println("Matrix initialized time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+
+//        DMatrixSparseCSC sparseCSC = ConvertDMatrixStruct.convert(sparseTriplet,(DMatrixSparseCSC)null);
+        DMatrixSparseCSC sparseCSC=sparseTriplet;
+//        sparseCSC.printNonZero();
+        System.out.println("Matrix converted to CSC time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+        Ap = sparseCSC.col_idx;
+        Ai = sparseCSC.nz_rows;
+        Ax = sparseCSC.nz_values;
+
+
+        System.out.println("Retrieved CCS data time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+
+        KLU_symbolic Symbolic;
+        KLU_numeric Numeric;
+        KLU_common Common = new KLU_common();
+
+        //Dklu_version.NPRINT = false ;
+        //Dklu_internal.NDEBUG = false ;
+
+        klu_defaults (Common);
+
+
+        Symbolic = klu_analyze (n, Ap, Ai, Common);
+        System.out.println("Klu analyzed time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+        Numeric = klu_factor (Ap, Ai, Ax, Symbolic, Common);
+        System.out.println("Klu factorized time msec: "+ (System.nanoTime()-startTime)/1000000);
+        startTime = System.nanoTime();
+        klu_solve (Symbolic, Numeric, n, 1, b, 0, Common);
+
+        System.out.println("Klu solved time msec: "+ (System.nanoTime()-startTime)/1000000);
+        System.out.println("Peak memory:"+ Common.mempeak+" status "+Common.status);
+//        for (i = 0 ; i < n ; i++) {
+//            System.out.printf("x [%d] = %g\n", i, b [i]) ;
+////            assertEquals(i + 1.0, b [i], DELTA) ;
+//        }
+    }
+
+
+    public static class MTXReader {
+
+        public static int nRows =0;
+        public static int nColumns = 0;
+        public static int nNonZeros = 0;
+
+        public static void read(String filename) throws java.io.IOException {
+            InputStream s = new FileInputStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(s));
+
+            // read type code initial line
+            String line = br.readLine();
+
+            // read comment lines if any
+            boolean comment = true;
+            while (comment) {
+                line = br.readLine();
+                comment = line.startsWith("%");
+            }
+
+            // line now contains the size information which needs to be parsed
+            String[] str = line.split("( )+");
+            nRows = (Integer.valueOf(str[0].trim())).intValue();
+            nColumns = (Integer.valueOf(str[1].trim())).intValue();
+            nNonZeros = (Integer.valueOf(str[2].trim())).intValue();
+
+            br.close();
+        }
+
+
+        public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+            try {
+                MTXReader.read("/Users/nfrick/Downloads/rajat08.mtx");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mtj_ccs_klu_test();
 //        la4j_ccs_klu_test();
 //        ejml_ccs_klu_test();
+        }
 
     }
 }

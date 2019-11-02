@@ -33,6 +33,8 @@ public class Dklu_test extends Dcs_test {
 
 	private static final String WEST0156 = "west0156";
 
+	private static final String ASIC_100k = "ASIC_100k";
+
 //	private static final String C1 = "1c";
 //
 //	private static final String ARROW_C = "arrowc";
@@ -431,4 +433,39 @@ public class Dklu_test extends Dcs_test {
 		assertEquals(188, Common.flops, 1e-03) ;
 	}
 
+	/**
+	 * n 156 nnz(A) 371 nnz(L+U+F) 406 resid 1.04858e+06
+	 * recip growth 0.0306751 condest 1.64225e+31 rcond 9.48528e-08 flops 188
+	 */
+	public void test_ASIC_100k() {
+		long startTime = System.nanoTime();
+
+		KLU_common Common = new KLU_common();
+		int[] lunz = new int[1];
+		double[] rnorm = new double[1];
+
+		InputStream in = get_stream (ASIC_100k) ;
+		System.out.println("Read file time msec: "+ (System.nanoTime()-startTime)/1000000);
+		startTime = System.nanoTime();
+
+		Dproblem prob = get_problem (in, 0, 1) ;
+		Dcs A = prob.A ;
+		klu_demo (A.m, A.p, A.i, A.x, true, lunz, rnorm, Common) ;
+		System.out.println("Analyzed and solved time msec: "+ (System.nanoTime()-startTime)/1000000);
+		startTime = System.nanoTime();
+
+		assertEquals(1,1);
+		System.out.printf("rnorm[0] %d\n",rnorm[0]);
+		System.out.printf("rcond %d\n",Common.rcond);
+		System.out.printf("rnorm[0] %d\n",rnorm[0]);
+//		assertEquals(156, A.m) ;
+//		assertEquals(156, A.n) ;
+//		assertEquals(371, A.p[A.m]) ;
+//		assertEquals(406, lunz[0]) ;
+//		assertEquals(1.04858e+06, rnorm[0], 1e+02) ;
+//		assertEquals(0.0306751, Common.rgrowth, 1e-06) ;
+//		assertEquals(1.64225e+31, Common.condest, 1e+26) ;
+//		assertEquals(9.48528e-08, Common.rcond, 1e-12) ;
+//		assertEquals(188, Common.flops, 1e-03) ;
+	}
 }
